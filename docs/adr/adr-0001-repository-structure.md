@@ -1,4 +1,4 @@
-# ADR-0001: Monorepo
+# ADR-0001: Repository Structure
 
 - **Status:** Decided
 - **Date:** 2026-05-22
