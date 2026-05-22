@@ -1,6 +1,6 @@
 # ADR-[number]: [Decision Title]
 
-- **Status:** Accepted / Superseded by ADR-X
+- **Status:** Decided / Accepted / Superseded by ADR-X
 - **Date:** YYYY-MM-DD
 - **Deciders:** [names or roles]
 
@@ -19,8 +19,6 @@ Brief description. Why it's a candidate.
 What did you decide and why?
 
 ## Consequences
-
-What did you trade away, and was it worth it?
 
 ### Positive
 
