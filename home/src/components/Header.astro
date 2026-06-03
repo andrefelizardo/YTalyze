@@ -1,0 +1,52 @@
+---
+import Logo from './Logo.astro';
+import GoogleSignInButton from './GoogleSignInButton.astro';
+import { navLinks } from '../data/site';
+---
+
+<header class="nav" id="nav">
+	<div class="wrap nav-inner">
+		<a class="brand" href="#top" aria-label="YTalyze home">
+			<Logo id="navg" class="logo" />
+			<span class="word">YTalyze</span>
+		</a>
+		<nav class="nav-links" aria-label="Primary">
+			{navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+		</nav>
+		<div class="nav-cta">
+			<GoogleSignInButton label="Sign in with Google" />
+		</div>
+		<button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+			<span></span><span></span><span></span>
+		</button>
+	</div>
+	<div class="mobile-menu" id="mobileMenu">
+		{navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+		<GoogleSignInButton label="Sign in with Google" />
+	</div>
+</header>
+
+<script>
+	const nav = document.getElementById('nav');
+	if (nav) {
+		const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+		onScroll();
+		window.addEventListener('scroll', onScroll, { passive: true });
+	}
+
+	const burger = document.getElementById('hamburger');
+	const menu = document.getElementById('mobileMenu');
+	if (burger && menu) {
+		const closeMenu = () => {
+			document.body.classList.remove('menu-open');
+			menu.classList.remove('open');
+			burger.setAttribute('aria-expanded', 'false');
+		};
+		burger.addEventListener('click', () => {
+			const open = menu.classList.toggle('open');
+			document.body.classList.toggle('menu-open', open);
+			burger.setAttribute('aria-expanded', String(open));
+		});
+		menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+	}
+</script>

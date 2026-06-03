@@ -1,0 +1,55 @@
+---
+import Logo from './Logo.astro';
+import GoogleSignInButton from './GoogleSignInButton.astro';
+---
+
+<section class="hero" id="top">
+	<div class="glow"></div>
+	<div class="wrap">
+		<div class="hero-grid">
+			<div class="hero-copy">
+				<span class="eyebrow reveal">Rewind your watch history</span>
+				<h1 class="reveal">
+					Your watch history is a diary. <em class="grad-text pop"
+						>Let's read it back to you.</em
+					>
+				</h1>
+				<p class="hero-sub reveal">
+					YTalyze turns ten years of YouTube into a personal, screenshot-ready rewind of
+					everything you've ever watched.
+				</p>
+				<div class="hero-cta reveal">
+					<GoogleSignInButton label="Connect and see yours — free" />
+					<a href="#preview" class="btn btn-ghost">See a sample rewind</a>
+				</div>
+				<div class="hero-note reveal">
+					<span>Free to run</span><span>Your data stays yours</span><span
+						>90 seconds to set up</span
+					>
+				</div>
+			</div>
+
+			<div class="hero-stack reveal">
+				<div class="ghost"></div>
+				<div class="ghost b"></div>
+				<div class="wcard">
+					<div class="wc-shine"></div>
+					<div class="inner">
+						<div class="wc-top"><span>YTalyze</span><span>Sample</span></div>
+						<div class="wc-mid">
+							<div class="wc-kicker">Lifetime watch time</div>
+							<div class="wc-num">3,902<small>hrs</small></div>
+							<div class="wc-desc">That's 162 days of your life on YouTube.</div>
+						</div>
+						<div class="wc-foot">
+							<span class="yt">
+								<Logo stroke="#14110E" accentColor="#14110E" width={15} height={17} />YTalyze
+							</span>
+							<span class="yr">Rewind 2026</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

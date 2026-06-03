@@ -1,0 +1,75 @@
+---
+const items = [
+	{
+		title: 'Processed for you, never on you',
+		body: 'Your history powers your cards and nothing else. Never sold, never used to train models, never shared.',
+		icon: 'check',
+	},
+	{
+		title: 'Read-only Google access',
+		body: "We request the minimum scope through Google OAuth. We can't post, delete, or touch a thing on your account.",
+		icon: 'lock',
+	},
+	{
+		title: 'Delete everything, instantly',
+		body: 'One button wipes your upload and every insight we derived from it. No tickets, no waiting, no "are you sure" maze.',
+		icon: 'trash',
+	},
+];
+---
+
+<section class="trust pad" id="privacy">
+	<div class="wrap">
+		<div class="trust-grid">
+			<div class="reveal">
+				<span
+					class="ey"
+					style="display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:16px;"
+					>Your data, your call</span
+				>
+				<h2>It's a decade of you in one file. We treat it that way.</h2>
+				<p class="lead">
+					YTalyze reads your history to build your rewind — then gets out of the way. No
+					selling, no training, no fine print surprises.
+				</p>
+			</div>
+			<div class="trust-list reveal">
+				{
+					items.map((item) => (
+						<div class="trust-item">
+							<div class="ck">
+								<svg
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="#FF6B3D"
+									stroke-width="2.2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									{item.icon === 'check' && <path d="M20 6 9 17l-5-5" />}
+									{item.icon === 'lock' && (
+										<>
+											<rect x="4" y="10.5" width="16" height="10" rx="2.4" />
+											<path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
+										</>
+									)}
+									{item.icon === 'trash' && (
+										<>
+											<path d="M3 6h18" />
+											<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+											<path d="M10 11v6M14 11v6" />
+										</>
+									)}
+								</svg>
+							</div>
+							<div>
+								<h4>{item.title}</h4>
+								<p>{item.body}</p>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</section>

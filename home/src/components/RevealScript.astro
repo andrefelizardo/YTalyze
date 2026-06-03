@@ -1,0 +1,75 @@
+---
+// Global, cross-cutting client behavior: scroll-reveal, count-up figures, and
+// animated bar fills. Kept at the Layout level (not scoped to a section) so it
+// can see `.reveal` / `.fill` / [data-count] elements rendered by any component.
+---
+
+<script>
+	const FRAMED = window.self !== window.top;
+	if (FRAMED) document.documentElement.classList.add('no-anim');
+
+	// count-up
+	function countUp(el: HTMLElement) {
+		if (el.dataset.done) return;
+		el.dataset.done = '1';
+		const target = parseFloat((el.dataset.count || '').replace(/[^0-9.]/g, ''));
+		if (!isFinite(target)) return;
+		const small = el.querySelector('small');
+		const smallHTML = small ? small.outerHTML : '';
+		const fmt = (n: number) => Math.round(n).toLocaleString('en-US');
+		const set = (v: number) => {
+			el.innerHTML = fmt(v) + smallHTML;
+		};
+		const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (reduced) {
+			set(target);
+			return;
+		}
+		const dur = 1100,
+			t0 = performance.now();
+		let raf = 0;
+		function tick(t: number) {
+			const p = Math.min(1, (t - t0) / dur);
+			const e = 1 - Math.pow(1 - p, 3);
+			set(target * e);
+			if (p < 1) raf = requestAnimationFrame(tick);
+		}
+		raf = requestAnimationFrame(tick);
+		// guarantee the final value even if rAF is throttled/paused
+		setTimeout(() => {
+			if (raf) cancelAnimationFrame(raf);
+			set(target);
+		}, dur + 300);
+	}
+
+	function fillBars(scope?: ParentNode) {
+		(scope || document).querySelectorAll<HTMLElement>('.fill').forEach((f) =>
+			f.style.setProperty('--p', f.dataset.p || '0'),
+		);
+	}
+
+	function showReveals() {
+		const vh = window.innerHeight || 800;
+		document.querySelectorAll<HTMLElement>('.reveal:not(.in)').forEach((el) => {
+			const r = el.getBoundingClientRect();
+			if (r.top < vh * 0.9 && r.bottom > 0) {
+				el.classList.add('in');
+				fillBars(el);
+				el.querySelectorAll<HTMLElement>('[data-count]').forEach(countUp);
+			}
+		});
+	}
+
+	showReveals();
+	window.addEventListener('scroll', showReveals, { passive: true });
+	window.addEventListener('resize', showReveals, { passive: true });
+	window.addEventListener('load', () => {
+		showReveals();
+		fillBars();
+	});
+	setTimeout(() => {
+		document.querySelectorAll('.reveal').forEach((e) => e.classList.add('in'));
+		fillBars();
+		document.querySelectorAll<HTMLElement>('[data-count]').forEach(countUp);
+	}, 1700);
+</script>

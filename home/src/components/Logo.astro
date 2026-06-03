@@ -1,0 +1,63 @@
+---
+// The YTalyze "down-arrow + analyze underline" mark.
+// The accent line is a gradient by default; pass `accentColor` for a solid
+// (e.g. the dark hero card). `id` must be unique per gradient instance on a page.
+interface Props {
+	id?: string;
+	class?: string;
+	/** Color of the main strokes. */
+	stroke?: string;
+	/** Solid accent color; when omitted, the accent line uses the gradient. */
+	accentColor?: string;
+	width?: number;
+	height?: number;
+	style?: string;
+}
+
+const {
+	id = 'logoGrad',
+	class: className,
+	stroke = '#F7F5F1',
+	accentColor,
+	width,
+	height,
+	style,
+} = Astro.props;
+---
+
+<svg
+	class={className}
+	viewBox="0 0 104 122"
+	width={width}
+	height={height}
+	style={style}
+	aria-hidden="true"
+>
+	<g fill="none" stroke={stroke} stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round">
+		<line x1="13" y1="17" x2="91" y2="17"></line>
+		<line x1="13" y1="17" x2="52" y2="66"></line>
+		<line x1="91" y1="17" x2="52" y2="66"></line>
+		<line x1="52" y1="66" x2="52" y2="108"></line>
+	</g>
+	<g transform="translate(17,0)">
+		<line
+			x1="13"
+			y1="51.5"
+			x2="91"
+			y2="51.5"
+			stroke={accentColor ?? `url(#${id})`}
+			stroke-width="11.5"
+			stroke-linecap="round"></line>
+	</g>
+	{
+		!accentColor && (
+			<defs>
+				<linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
+					<stop offset="0" stop-color="#FF2E63" />
+					<stop offset=".5" stop-color="#FF6B3D" />
+					<stop offset="1" stop-color="#FFB13D" />
+				</linearGradient>
+			</defs>
+		)
+	}
+</svg>
