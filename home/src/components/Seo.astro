@@ -1,0 +1,80 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+	title?: string;
+	description?: string;
+	/** Path or absolute URL of the social card image. */
+	image?: string;
+	/** Open Graph type. */
+	type?: string;
+	/** Canonical path (relative to the site root). Defaults to the current path. */
+	canonical?: string;
+}
+
+const {
+	title = site.title,
+	description = site.description,
+	image = site.ogImage,
+	type = 'website',
+	canonical,
+} = Astro.props;
+
+// Build absolute URLs against the configured `site` so OG/canonical work for crawlers.
+const base = Astro.site ?? new URL(Astro.url.origin);
+const canonicalURL = new URL(canonical ?? Astro.url.pathname, base).href;
+const imageURL = new URL(image, base).href;
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization',
+			'@id': new URL('#organization', base).href,
+			name: site.name,
+			url: base.href,
+			logo: new URL('/favicon.svg', base).href,
+		},
+		{
+			'@type': 'WebSite',
+			'@id': new URL('#website', base).href,
+			url: base.href,
+			name: site.name,
+			description: site.description,
+			publisher: { '@id': new URL('#organization', base).href },
+		},
+		{
+			'@type': 'SoftwareApplication',
+			name: site.name,
+			applicationCategory: 'UtilitiesApplication',
+			operatingSystem: 'Web',
+			description: site.description,
+			url: base.href,
+			offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+		},
+	],
+};
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+<meta name="theme-color" content={site.themeColor} />
+
+{/* Open Graph */}
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:image" content={imageURL} />
+
+{/* Twitter */}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={site.twitter} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL} />
+
+{/* Structured data */}
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />

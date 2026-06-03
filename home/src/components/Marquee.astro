@@ -1,0 +1,12 @@
+---
+import { marqueeItems } from '../data/site';
+
+// Duplicated track so the -50% translate loop is seamless.
+const track = [...marqueeItems, ...marqueeItems];
+---
+
+<div class="ribbon" aria-hidden="true">
+	<div class="marquee">
+		{track.map((item) => <span>{item}</span>)}
+	</div>
+</div>

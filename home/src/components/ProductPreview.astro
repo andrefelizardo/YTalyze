@@ -1,0 +1,97 @@
+---
+// Sample dashboard mockup. Owns its own #heatClock cell builder.
+---
+
+<section class="preview" id="preview">
+	<div class="wrap">
+		<div class="preview-head reveal">
+			<span class="sample-tag" style="margin:0 auto 18px;">Sample rewind</span>
+			<h2>Here's a sample. <span class="grad-text">Yours will look like this.</span></h2>
+			<p>
+				One sign-in turns ten years of watching into a dashboard you'll actually want to
+				screenshot — built entirely from your own history.
+			</p>
+		</div>
+
+		{/* live dashboard mockup */}
+		<div class="preview-stage reveal">
+			<div class="panel dash">
+				<div class="dash-top">
+					<div class="who">
+						<div class="av"></div>
+						<div>
+							<div class="nm">Sample rewind</div>
+							<div class="sb">2016 — 2026 · 14,326 videos</div>
+						</div>
+					</div>
+					<span class="dash-sample">Sample</span>
+				</div>
+
+				<div class="stat-row">
+					<div class="mini">
+						<div class="k">Lifetime watch time</div>
+						<div class="v grad-text">3,902<small>hrs</small></div>
+					</div>
+					<div class="mini">
+						<div class="k">Peak hour</div>
+						<div class="v">2<small>:14 AM</small></div>
+					</div>
+				</div>
+
+				<div class="barchart" style="margin-bottom:14px;">
+					<div class="hd">
+						<span class="t">Top channels</span><span class="mono" style="font-size:9.5px;"
+							>by hours</span
+						>
+					</div>
+					<div class="bar">
+						<span class="lbl">Veritasium</span><span class="track"
+							><span class="fill" data-p="1"></span></span
+						><span class="pct">211h</span>
+					</div>
+					<div class="bar mut">
+						<span class="lbl">Lofi Girl</span><span class="track"
+							><span class="fill" data-p="0.74"></span></span
+						><span class="pct">156h</span>
+					</div>
+					<div class="bar mut">
+						<span class="lbl">Kurzgesagt</span><span class="track"
+							><span class="fill" data-p="0.55"></span></span
+						><span class="pct">118h</span>
+					</div>
+					<div class="bar mut">
+						<span class="lbl">NB ASMR</span><span class="track"
+							><span class="fill" data-p="0.39"></span></span
+						><span class="pct">82h</span>
+					</div>
+				</div>
+
+				<div class="barchart">
+					<div class="hd">
+						<span class="t">When you watch</span><span class="mono" style="font-size:9.5px;"
+							>12a — 12p · hourly</span
+						>
+					</div>
+					<div class="clock" id="heatClock"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	// hero heat clock (12 cells, intensity ramps to late night)
+	const host = document.getElementById('heatClock');
+	if (host) {
+		const vals = [0.95, 0.8, 0.5, 0.28, 0.12, 0.08, 0.05, 0.1, 0.22, 0.34, 0.46, 0.6]; // 12a..11a
+		vals.forEach((v) => {
+			const i = document.createElement('i');
+			const a = 0.07 + v * 0.93;
+			i.style.background =
+				v > 0.45
+					? `linear-gradient(135deg, rgba(255,46,99,${a}), rgba(255,177,61,${a}))`
+					: `rgba(255,107,61,${0.1 + v * 0.5})`;
+			host.appendChild(i);
+		});
+	}
+</script>
