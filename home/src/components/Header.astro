@@ -6,12 +6,17 @@ import { navLinks } from '../data/site';
 <header class="nav" id="nav">
 	<div class="wrap nav-inner">
 		<a class="brand" href="#top" aria-label="YTalyze home">
-			<img src="/images/ytalyze-mark-white-color.svg" class="logo" alt="YTalyze icon" />
+			<img src="/images/ytalyze-mark-white-color.svg" class="logo logo-dark" alt="YTalyze icon" />
+			<img src="/images/ytalyze-mark-color.svg" class="logo logo-light" alt="" aria-hidden="true" />
 			<span class="word">YTalyze</span>
 		</a>
 		<nav class="nav-links" aria-label="Primary">
 			{navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
 		</nav>
+		<button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch colour theme" title="Switch theme">
+			<svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+			<svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg>
+		</button>
 		<div class="nav-cta">
 			<GoogleSignInButton label="Sign in with Google" />
 		</div>
@@ -48,4 +53,43 @@ import { navLinks } from '../data/site';
 		});
 		menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
 	}
+
+	// ---- theme toggle ----
+	const THEME_KEY = 'ytalyze-theme';
+	const root = document.documentElement;
+	const themeMeta = document.querySelector('meta[name="theme-color"]');
+	const lightQuery = window.matchMedia('(prefers-color-scheme: light)');
+
+	const applyTheme = (t: string) => {
+		if (t === 'light') {
+			root.setAttribute('data-theme', 'light');
+			if (themeMeta) themeMeta.setAttribute('content', '#FBFAF7');
+		} else {
+			root.removeAttribute('data-theme');
+			if (themeMeta) themeMeta.setAttribute('content', '#0B0B0C');
+		}
+	};
+
+	// Sync the theme-color meta with what the inline head script already resolved.
+	applyTheme(root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+
+	const themeBtn = document.getElementById('themeToggle');
+	if (themeBtn) {
+		themeBtn.addEventListener('click', () => {
+			const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+			applyTheme(next);
+			try {
+				localStorage.setItem(THEME_KEY, next);
+			} catch (e) {}
+		});
+	}
+
+	// Follow live OS theme changes only while the user has no manual preference saved.
+	lightQuery.addEventListener('change', (e) => {
+		let saved = null;
+		try {
+			saved = localStorage.getItem(THEME_KEY);
+		} catch (err) {}
+		if (!saved) applyTheme(e.matches ? 'light' : 'dark');
+	});
 </script>

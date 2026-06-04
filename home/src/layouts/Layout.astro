@@ -17,8 +17,16 @@ const { title, description, image, type, canonical } = Astro.props;
 <!doctype html>
 <html lang="en">
 	<head>
-		{/* Set the `js` flag before paint so reveal animations start hidden (no flash). */}
-		<script is:inline>document.documentElement.className = 'js';</script>
+		{/* Set the `js` flag before paint so reveal animations start hidden (no flash),
+		    and resolve the theme (localStorage → OS preference → dark) to avoid a theme flash. */}
+		<script is:inline>
+			document.documentElement.className = 'js';
+			try {
+				var t = localStorage.getItem('ytalyze-theme');
+				if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+				if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+			} catch (e) {}
+		</script>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="generator" content={Astro.generator} />
