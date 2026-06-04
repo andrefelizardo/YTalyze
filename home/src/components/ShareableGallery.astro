@@ -95,3 +95,74 @@ const stories = [
 		</div>
 	</div>
 </section>
+
+<script>
+	// shareable gallery — drag / swipe to browse
+	const g = document.getElementById('gallery');
+	if (g) {
+		let down = false;
+		let moved = false;
+		let startX = 0;
+		let startScroll = 0;
+		let pid: number | null = null;
+		const DRAG_THRESHOLD = 4;
+
+		g.addEventListener('pointerdown', (e) => {
+			if (e.pointerType === 'mouse' && e.button !== 0) return;
+			down = true;
+			moved = false;
+			pid = e.pointerId;
+			startX = e.clientX;
+			startScroll = g.scrollLeft;
+			g.classList.add('grabbing');
+		});
+
+		g.addEventListener('pointermove', (e) => {
+			if (!down) return;
+			const dx = e.clientX - startX;
+			if (!moved && Math.abs(dx) > DRAG_THRESHOLD) {
+				moved = true;
+				try {
+					if (pid !== null) g.setPointerCapture(pid);
+				} catch (_) {}
+				g.style.scrollSnapType = 'none';
+			}
+			if (moved) {
+				g.scrollLeft = startScroll - dx;
+				e.preventDefault();
+			}
+		});
+
+		function end() {
+			if (!down || !g) return;
+			down = false;
+			g.classList.remove('grabbing');
+			try {
+				if (pid !== null) g.releasePointerCapture(pid);
+			} catch (_) {}
+			// restore snap on the next frame so the release position settles first
+			requestAnimationFrame(() => {
+				g.style.scrollSnapType = '';
+			});
+		}
+		g.addEventListener('pointerup', end);
+		g.addEventListener('pointercancel', end);
+		g.addEventListener('pointerleave', end);
+
+		// suppress click after a real drag (so chip taps inside don't fire on drag-release)
+		g.addEventListener(
+			'click',
+			(e) => {
+				if (moved) {
+					e.stopPropagation();
+					e.preventDefault();
+					moved = false;
+				}
+			},
+			true
+		);
+
+		// prevent native image/link dragging from hijacking the gesture
+		g.addEventListener('dragstart', (e) => e.preventDefault());
+	}
+</script>
