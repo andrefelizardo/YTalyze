@@ -1,14 +1,22 @@
+---
+import type { Dict } from '../i18n/ui';
+
+interface Props {
+	dict: Dict;
+}
+
+const { dict } = Astro.props;
+const t = dict.howItWorks;
+---
+
 <section class="how pad" id="how">
 	<div class="wrap">
 		<div class="sec-head reveal">
 			<div class="lead">
-				<span class="ey">How it works</span>
-				<h2>Three taps. Ninety seconds.<br />Then it gets personal.</h2>
+				<span class="ey">{t.ey}</span>
+				<h2 set:html={t.headingHtml} />
 			</div>
-			<p class="note">
-				No spreadsheets, no API keys, no setup wizard. Sign in, drop your file, watch it
-				unfold.
-			</p>
+			<p class="note">{t.note}</p>
 		</div>
 		<div class="steps">
 			<div class="step reveal">
@@ -29,12 +37,9 @@
 							fill="#fff"></path>
 					</svg>
 				</div>
-				<h3>Sign in with Google</h3>
-				<p>
-					One tap with the account you already binge on. Read-only and revocable — nothing
-					gets posted, ever.
-				</p>
-				<span class="ftag">~ 5 seconds</span>
+				<h3>{t.steps[0].title}</h3>
+				<p>{t.steps[0].body}</p>
+				<span class="ftag">{t.steps[0].ftag}</span>
 			</div>
 			<div class="step reveal">
 				<span class="n">02</span>
@@ -52,12 +57,9 @@
 						<path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"></path>
 					</svg>
 				</div>
-				<h3>Drop your history</h3>
-				<p>
-					Export your watch history from Google Takeout and drag the file in. We parse it
-					the second it lands.
-				</p>
-				<span class="ftag">~ 60 seconds</span>
+				<h3>{t.steps[1].title}</h3>
+				<p>{t.steps[1].body}</p>
+				<span class="ftag">{t.steps[1].ftag}</span>
 			</div>
 			<div class="step reveal">
 				<span class="n">03</span>
@@ -75,12 +77,9 @@
 						<path d="M3 4v16"></path>
 					</svg>
 				</div>
-				<h3>Get your rewind</h3>
-				<p>
-					Out comes a full-screen, swipeable rewind — and a stack of cards already sized for
-					your Stories.
-				</p>
-				<span class="ftag">instant</span>
+				<h3>{t.steps[2].title}</h3>
+				<p>{t.steps[2].body}</p>
+				<span class="ftag">{t.steps[2].ftag}</span>
 			</div>
 		</div>
 	</div>

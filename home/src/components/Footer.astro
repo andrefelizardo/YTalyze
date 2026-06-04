@@ -1,5 +1,28 @@
 ---
-import { footerColumns } from '../data/site';
+import { companyLinks, legalLinks, navLinks } from '../data/site';
+import type { Dict } from '../i18n/ui';
+
+interface Props {
+	dict: Dict;
+}
+
+const { dict } = Astro.props;
+const t = dict.footer;
+
+const columns = [
+	{
+		title: t.columns.product,
+		links: navLinks.map((link) => ({ href: link.href, label: dict.nav[link.key] })),
+	},
+	{
+		title: t.columns.company,
+		links: companyLinks.map((link) => ({ href: link.href, label: t.links[link.key] })),
+	},
+	{
+		title: t.columns.legal,
+		links: legalLinks.map((link) => ({ href: link.href, label: t.links[link.key] })),
+	},
+];
 ---
 
 <footer class="ft">
@@ -11,11 +34,11 @@ import { footerColumns } from '../data/site';
 					<img src="/images/ytalyze-mark-color.svg" class="logo logo-light" style="height:28px;" alt="" aria-hidden="true" />
 					<span class="word">YTalyze</span>
 				</a>
-				<p>Rewind your watch history. One displaced frame, a whole history of you.</p>
+				<p>{t.tagline}</p>
 			</div>
 			<div class="ft-cols">
 				{
-					footerColumns.map((col) => (
+					columns.map((col) => (
 						<div class="ft-col">
 							<h5>{col.title}</h5>
 							{col.links.map((link) => (
@@ -27,8 +50,8 @@ import { footerColumns } from '../data/site';
 			</div>
 		</div>
 		<div class="ft-bottom">
-			<span class="mono">© 2026 YTalyze · Not affiliated with YouTube or Google</span>
-			<span class="mono">Made for the curious</span>
+			<span class="mono">{t.copyright}</span>
+			<span class="mono">{t.madeFor}</span>
 		</div>
 	</div>
 </footer>

@@ -16,7 +16,8 @@
 		if (!isFinite(target)) return;
 		const small = el.querySelector('small');
 		const smallHTML = small ? small.outerHTML : '';
-		const fmt = (n: number) => Math.round(n).toLocaleString('en-US');
+		// format with the page's locale (e.g. "3,902" in en, "3.902" in pt-BR)
+		const fmt = (n: number) => Math.round(n).toLocaleString(document.documentElement.lang || 'en');
 		const set = (v: number) => {
 			el.innerHTML = fmt(v) + smallHTML;
 		};

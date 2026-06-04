@@ -1,21 +1,15 @@
 ---
-const items = [
-	{
-		title: 'Processed for you, never on you',
-		body: 'Your history powers your cards and nothing else. Never sold, never used to train models, never shared.',
-		icon: 'check',
-	},
-	{
-		title: 'Read-only Google access',
-		body: "We request the minimum scope through Google OAuth. We can't post, delete, or touch a thing on your account.",
-		icon: 'lock',
-	},
-	{
-		title: 'Delete everything, instantly',
-		body: 'One button wipes your upload and every insight we derived from it. No tickets, no waiting, no "are you sure" maze.',
-		icon: 'trash',
-	},
-];
+import type { Dict } from '../i18n/ui';
+
+interface Props {
+	dict: Dict;
+}
+
+const { dict } = Astro.props;
+const t = dict.trust;
+
+// Icons are structural; titles/bodies come from the dictionary (same order).
+const items = ['check', 'lock', 'trash'].map((icon, i) => ({ icon, ...t.items[i] }));
 ---
 
 <section class="trust pad" id="privacy">
@@ -25,13 +19,10 @@ const items = [
 				<span
 					class="ey"
 					style="display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:16px;"
-					>Your data, your call</span
+					>{t.ey}</span
 				>
-				<h2>It's a decade of you in one file. We treat it that way.</h2>
-				<p class="lead">
-					YTalyze reads your history to build your rewind — then gets out of the way. No
-					selling, no training, no fine print surprises.
-				</p>
+				<h2>{t.heading}</h2>
+				<p class="lead">{t.lead}</p>
 			</div>
 			<div class="trust-list reveal">
 				{

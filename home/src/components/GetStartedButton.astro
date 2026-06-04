@@ -3,18 +3,14 @@
 import ArrowIcon from './ArrowIcon.astro';
 
 interface Props {
-	label?: string;
+	/** Localized label — pass `dict.getStarted`. */
+	label: string;
 	href?: string;
 	withArrow?: boolean;
 	class?: string;
 }
 
-const {
-	label = 'Get started',
-	href = '#',
-	withArrow = false,
-	class: className,
-} = Astro.props;
+const { label, href = '#', withArrow = false, class: className } = Astro.props;
 ---
 
 <a href={href} class:list={['btn', 'btn-google', className]}>

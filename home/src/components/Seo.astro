@@ -1,7 +1,9 @@
 ---
 import { site } from '../data/site';
+import { defaultLocale, getDict, hreflang, locales, type Locale } from '../i18n/ui';
 
 interface Props {
+	locale?: Locale;
 	title?: string;
 	description?: string;
 	/** Path or absolute URL of the social card image. */
@@ -12,18 +14,21 @@ interface Props {
 	canonical?: string;
 }
 
-const {
-	title = site.title,
-	description = site.description,
-	image = site.ogImage,
-	type = 'website',
-	canonical,
-} = Astro.props;
+const { locale = defaultLocale, image = site.ogImage, type = 'website', canonical } = Astro.props;
+
+const dict = getDict(locale);
+const title = Astro.props.title ?? dict.meta.title;
+const description = Astro.props.description ?? dict.meta.description;
 
 // Build absolute URLs against the configured `site` so OG/canonical work for crawlers.
 const base = Astro.site ?? new URL(Astro.url.origin);
 const canonicalURL = new URL(canonical ?? Astro.url.pathname, base).href;
 const imageURL = new URL(image, base).href;
+
+// hreflang alternates — every page links both locale variants; x-default → English root.
+const localeHome = (l: Locale) => new URL(l === defaultLocale ? '/' : `/${l}/`, base).href;
+const alternates = locales.map((l) => ({ hreflang: hreflang[l], href: localeHome(l) }));
+const otherOgLocales = locales.filter((l) => l !== locale).map((l) => getDict(l).meta.ogLocale);
 
 const jsonLd = {
 	'@context': 'https://schema.org',
@@ -40,7 +45,8 @@ const jsonLd = {
 			'@id': new URL('#website', base).href,
 			url: base.href,
 			name: site.name,
-			description: site.description,
+			description,
+			inLanguage: hreflang[locale],
 			publisher: { '@id': new URL('#organization', base).href },
 		},
 		{
@@ -48,7 +54,8 @@ const jsonLd = {
 			name: site.name,
 			applicationCategory: 'UtilitiesApplication',
 			operatingSystem: 'Web',
-			description: site.description,
+			description,
+			inLanguage: hreflang[locale],
 			url: base.href,
 			offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
 		},
@@ -61,6 +68,10 @@ const jsonLd = {
 <link rel="canonical" href={canonicalURL} />
 <meta name="theme-color" content={site.themeColor} />
 
+{/* hreflang alternates */}
+{alternates.map((alt) => <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />)}
+<link rel="alternate" hreflang="x-default" href={localeHome(defaultLocale)} />
+
 {/* Open Graph */}
 <meta property="og:type" content={type} />
 <meta property="og:site_name" content={site.name} />
@@ -68,6 +79,8 @@ const jsonLd = {
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:image" content={imageURL} />
+<meta property="og:locale" content={dict.meta.ogLocale} />
+{otherOgLocales.map((l) => <meta property="og:locale:alternate" content={l} />)}
 
 {/* Twitter */}
 <meta name="twitter:card" content="summary_large_image" />

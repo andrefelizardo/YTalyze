@@ -1,9 +1,11 @@
 ---
 import Seo from '../components/Seo.astro';
 import RevealScript from '../components/RevealScript.astro';
+import { defaultLocale, hreflang, type Locale } from '../i18n/ui';
 import '../styles/global.css';
 
 interface Props {
+	locale?: Locale;
 	title?: string;
 	description?: string;
 	image?: string;
@@ -11,12 +13,31 @@ interface Props {
 	canonical?: string;
 }
 
-const { title, description, image, type, canonical } = Astro.props;
+const { locale = defaultLocale, title, description, image, type, canonical } = Astro.props;
+
+// Only the English homepage carries the language auto-detect redirect.
+const detectLanguage = locale === defaultLocale && Astro.url.pathname === '/';
+
+// Browser-language detection: if the visitor's primary language is Portuguese,
+// redirect once per session to /pt-br/. Runs before paint; `replace` keeps the
+// back button usable, and the sessionStorage guard lets a pt user deliberately
+// stay on `/`. The hash is preserved for anchor deep-links.
+const detectScript = `(function () {
+	try {
+		if (sessionStorage.getItem('ytalyze-lang-redirected')) return;
+		var lang = (navigator.languages && navigator.languages[0]) || navigator.language || '';
+		if (lang.toLowerCase().indexOf('pt') === 0) {
+			sessionStorage.setItem('ytalyze-lang-redirected', '1');
+			location.replace('/pt-br/' + location.hash);
+		}
+	} catch (e) {}
+})();`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={hreflang[locale]}>
 	<head>
+		{detectLanguage && <script is:inline set:html={detectScript} />}
 		{/* Set the `js` flag before paint so reveal animations start hidden (no flash),
 		    and resolve the theme (localStorage → OS preference → dark) to avoid a theme flash. */}
 		<script is:inline>
@@ -39,6 +60,7 @@ const { title, description, image, type, canonical } = Astro.props;
 			rel="stylesheet"
 		/>
 		<Seo
+			locale={locale}
 			title={title}
 			description={description}
 			image={image}

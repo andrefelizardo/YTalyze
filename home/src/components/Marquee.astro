@@ -1,8 +1,12 @@
 ---
-import { marqueeItems } from '../data/site';
+interface Props {
+	items: readonly string[];
+}
+
+const { items } = Astro.props;
 
 // Duplicated track so the -50% translate loop is seamless.
-const track = [...marqueeItems, ...marqueeItems];
+const track = [...items, ...items];
 ---
 
 <div class="ribbon" aria-hidden="true">

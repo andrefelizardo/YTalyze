@@ -1,5 +1,13 @@
 ---
 import GetStartedButton from './GetStartedButton.astro';
+import type { Dict } from '../i18n/ui';
+
+interface Props {
+	dict: Dict;
+}
+
+const { dict } = Astro.props;
+const t = dict.hero;
 ---
 
 <section class="hero" id="top">
@@ -7,24 +15,17 @@ import GetStartedButton from './GetStartedButton.astro';
 	<div class="wrap">
 		<div class="hero-grid">
 			<div class="hero-copy">
-				<span class="eyebrow reveal">Rewind your watch history</span>
+				<span class="eyebrow reveal">{t.eyebrow}</span>
 				<h1 class="reveal">
-					Your watch history is a diary. <em class="grad-text pop"
-						>Let's read it back to you.</em
-					>
+					{t.h1Lead} <em class="grad-text pop">{t.h1Em}</em>
 				</h1>
-				<p class="hero-sub reveal">
-					YTalyze turns ten years of YouTube into a personal, screenshot-ready rewind of
-					everything you've ever watched.
-				</p>
+				<p class="hero-sub reveal">{t.sub}</p>
 				<div class="hero-cta reveal">
-					<GetStartedButton withArrow />
-					<a href="#heart" class="btn btn-ghost">Read more</a>
+					<GetStartedButton label={dict.getStarted} withArrow />
+					<a href="#heart" class="btn btn-ghost">{t.readMore}</a>
 				</div>
 				<div class="hero-note reveal">
-					<span>Free to run</span><span>Your data stays yours</span><span
-						>90 seconds to set up</span
-					>
+					{t.note.map((item) => <span>{item}</span>)}
 				</div>
 			</div>
 
@@ -34,17 +35,17 @@ import GetStartedButton from './GetStartedButton.astro';
 				<div class="wcard">
 					<div class="wc-shine"></div>
 					<div class="inner">
-						<div class="wc-top"><span>YTalyze</span><span>Sample</span></div>
+						<div class="wc-top"><span>YTalyze</span><span>{t.card.sample}</span></div>
 						<div class="wc-mid">
-							<div class="wc-kicker">Lifetime watch time</div>
-							<div class="wc-num">3,902<small>hrs</small></div>
-							<div class="wc-desc">That's 162 days of your life on YouTube.</div>
+							<div class="wc-kicker">{t.card.kicker}</div>
+							<div class="wc-num" set:html={t.card.numHtml} />
+							<div class="wc-desc">{t.card.desc}</div>
 						</div>
 						<div class="wc-foot">
 							<span class="yt">
 								<img src="/images/ytalyze-mark-color.svg" width="15" height="17" alt="" />YTalyze
 							</span>
-							<span class="yr">Rewind 2026</span>
+							<span class="yr">{t.card.year}</span>
 						</div>
 					</div>
 				</div>

@@ -1,14 +1,23 @@
 ---
 import ArrowIcon from './ArrowIcon.astro';
+import type { Dict } from '../i18n/ui';
 
-// Sample story cards (9:16). `num` may contain inline HTML for the unit.
+interface Props {
+	dict: Dict;
+}
+
+const { dict } = Astro.props;
+const t = dict.shareGallery;
+
+// Sample story cards (9:16) — structure here, localized text zipped in from
+// `dict.shareGallery.stories` (same order). `numHtml` may contain inline HTML.
 const stories = [
-	{ cls: 's1', idx: '01', k: 'Total watch time', num: '3,902<small>h</small>', d: '163 days of your life, pressed play. No regrets (some regrets).' },
-	{ cls: 's2', idx: '02', k: 'Peak watch time', num: '12:47<small>AM</small>', d: 'Certified night owl. The mornings never stood a chance.' },
-	{ cls: 's3', idx: '03', k: 'Your obsession', num: '312<small>vids</small>', d: 'One channel. 312 videos. A relationship, honestly.' },
-	{ cls: 's4', idx: '04', k: 'Hours on cooking', num: '427<small>h</small>', d: "You could've gone to culinary school. You made toast." },
-	{ cls: 's5', idx: '05', k: 'Rabbit holes', num: '38', d: 'Thirty-eight descents into the unknown. We counted them all.' },
-];
+	{ cls: 's1', idx: '01' },
+	{ cls: 's2', idx: '02' },
+	{ cls: 's3', idx: '03' },
+	{ cls: 's4', idx: '04' },
+	{ cls: 's5', idx: '05' },
+].map((s, i) => ({ ...s, ...t.stories[i] }));
 ---
 
 <section class="share pad" id="share">
@@ -16,13 +25,10 @@ const stories = [
 	<div class="wrap">
 		<div class="sec-head reveal">
 			<div class="lead">
-				<span class="ey">Built to be posted</span>
-				<h2>Every insight comes out<br />Story-shaped.</h2>
+				<span class="ey">{t.ey}</span>
+				<h2 set:html={t.headingHtml} />
 			</div>
-			<p class="note">
-				These are sample cards — yours generate from your own history. 9:16, bold, and ready
-				to screenshot the second they load.
-			</p>
+			<p class="note">{t.note}</p>
 		</div>
 		<div class="gallery reveal" id="gallery">
 			{
@@ -32,9 +38,9 @@ const stories = [
 							<div class="top"><span>YTalyze</span><span>{s.idx}</span></div>
 							<div class="mid">
 								<div class="k">{s.k}</div>
-								<div class="num" set:html={s.num} />
+								<div class="num" set:html={s.numHtml} />
 								<div class="d">{s.d}</div>
-								<div class="foot"><span>YTalyze</span><span>Sample</span></div>
+								<div class="foot"><span>YTalyze</span><span>{dict.hero.card.sample}</span></div>
 							</div>
 						</div>
 					</div>
@@ -42,7 +48,7 @@ const stories = [
 			}
 		</div>
 		<div class="share-hint reveal">
-			<ArrowIcon size={15} strokeWidth={2} />Drag to browse the set
+			<ArrowIcon size={15} strokeWidth={2} />{t.hint}
 		</div>
 		<div class="share-actions reveal">
 			<span class="chipbtn">
@@ -58,7 +64,7 @@ const stories = [
 				>
 					<path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
 					<path d="M16 6l-4-4-4 4M12 2v14"></path>
-				</svg>Save all cards
+				</svg>{t.chips[0]}
 			</span>
 			<span class="chipbtn">
 				<svg
@@ -75,7 +81,7 @@ const stories = [
 					<circle cx="6" cy="12" r="3"></circle>
 					<circle cx="18" cy="19" r="3"></circle>
 					<path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"></path>
-				</svg>Post to Stories
+				</svg>{t.chips[1]}
 			</span>
 			<span class="chipbtn">
 				<svg
@@ -90,7 +96,7 @@ const stories = [
 				>
 					<rect x="3" y="3" width="18" height="18" rx="4"></rect>
 					<path d="M8 12h8M12 8v8"></path>
-				</svg>Make your own
+				</svg>{t.chips[2]}
 			</span>
 		</div>
 	</div>

@@ -1,30 +1,34 @@
 ---
 import ArrowIcon from './ArrowIcon.astro';
 import type { Insight } from '../data/insights';
+import type { Dict } from '../i18n/ui';
 
 interface Props {
 	insight: Insight;
+	/** Localized copy for this block — `dict.insights[insight.theme]`. */
+	t: Dict['insights'][Insight['theme']];
+	/** Localized CTA label — `dict.insightCta`. */
+	cta: string;
 }
 
-const { insight } = Astro.props;
-const { theme, pill, tagline, heading, body, statNum, count, numStyle, statLabel, watermark, seekTop } =
-	insight;
+const { insight, t, cta } = Astro.props;
+const { theme, count, numStyle, seekTop } = insight;
 ---
 
 <section class:list={['insight', theme]}>
 	<div class="seekband" style={`top:${seekTop};`}></div>
-	<div class="watermark">{watermark}</div>
+	<div class="watermark">{t.watermark}</div>
 	<div class="wrap">
 		<div class="insight-inner">
 			<div class="main reveal">
-				<span class="tagline"><span class="pill">{pill}</span> {tagline}</span>
-				<h2 class="i-head">{heading}</h2>
-				<p class="sub" set:html={body}></p>
+				<span class="tagline"><span class="pill">{t.pill}</span> {t.tagline}</span>
+				<h2 class="i-head">{t.heading}</h2>
+				<p class="sub" set:html={t.bodyHtml}></p>
 				<div class="i-stat">
-					<span class="i-num" data-count={count} style={numStyle} set:html={statNum}></span>
-					<span class="i-lab">{statLabel}</span>
+					<span class="i-num" data-count={count} style={numStyle} set:html={t.statNumHtml}></span>
+					<span class="i-lab">{t.statLabel}</span>
 				</div>
-				<a href="#top" class="insight-cta">Connect to see yours<ArrowIcon /></a>
+				<a href="#top" class="insight-cta">{cta}<ArrowIcon /></a>
 			</div>
 			<div class="aside reveal">
 				<slot />

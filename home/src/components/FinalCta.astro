@@ -1,21 +1,26 @@
 ---
 import GetStartedButton from './GetStartedButton.astro';
+import type { Dict } from '../i18n/ui';
+
+interface Props {
+	dict: Dict;
+}
+
+const { dict } = Astro.props;
+const t = dict.finalCta;
 ---
 
 <section class="final pad">
 	<div class="mesh"></div>
 	<div class="wrap">
-		<h2 class="reveal">Ready to see yours?</h2>
-		<p class="reveal">
-			Get started and let YTalyze play your watch history back to you. Free, private,
-			and ninety seconds from your first insight.
-		</p>
+		<h2 class="reveal">{t.heading}</h2>
+		<p class="reveal">{t.body}</p>
 		<div class="hero-cta reveal">
-			<GetStartedButton withArrow />
-			<a href="#top" class="btn btn-ghost">Back to top</a>
+			<GetStartedButton label={dict.getStarted} withArrow />
+			<a href="#top" class="btn btn-ghost">{t.backToTop}</a>
 		</div>
 		<div class="hero-note reveal" style="margin-top:22px;">
-			<span>Free to run</span><span>No card required</span><span>Delete anytime</span>
+			{t.note.map((item) => <span>{item}</span>)}
 		</div>
 	</div>
 </section>
