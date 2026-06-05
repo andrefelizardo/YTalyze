@@ -28,7 +28,24 @@ export const ptBr: Dict = {
 		privacy: 'Privacidade',
 	},
 
-	getStarted: 'Começar agora',
+	joinWaitlist: 'Entrar na lista de espera',
+
+	waitlist: {
+		closeLabel: 'Fechar janela da lista de espera',
+		badge: 'Lista de espera · Em breve',
+		title: 'Entre na lista de espera',
+		sub: 'O YTalyze ainda não abriu. Deixe seu e-mail e você será a primeira pessoa a saber quando sua retrospectiva estiver pronta.',
+		emailLabel: 'Endereço de e-mail',
+		emailPlaceholder: 'voce@exemplo.com',
+		invalidEmail: 'Digite um endereço de e-mail válido.',
+		submit: 'Entrar na lista',
+		formError: 'Algo deu errado do nosso lado. Seu e-mail não foi salvo — tente de novo.',
+		fine: 'Sem conta, sem senha — só um e-mail quando o YTalyze abrir. Cancele quando quiser.',
+		successTitle: 'Você está na lista!',
+		successHtml:
+			'Guardamos <b id="wlSuccessEmail">seu lugar</b>. Você vai receber um único e-mail assim que sua retrospectiva estiver pronta — nada antes disso.',
+		done: 'Pronto',
+	},
 
 	hero: {
 		eyebrow: 'Reveja seu histórico do YouTube',

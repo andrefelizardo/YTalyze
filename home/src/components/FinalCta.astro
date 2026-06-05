@@ -1,5 +1,5 @@
 ---
-import GetStartedButton from './GetStartedButton.astro';
+import WaitlistButton from './WaitlistButton.astro';
 import type { Dict } from '../i18n/ui';
 
 interface Props {
@@ -16,7 +16,7 @@ const t = dict.finalCta;
 		<h2 class="reveal">{t.heading}</h2>
 		<p class="reveal">{t.body}</p>
 		<div class="hero-cta reveal">
-			<GetStartedButton label={dict.getStarted} withArrow />
+			<WaitlistButton label={dict.joinWaitlist} withArrow />
 			<a href="#top" class="btn btn-ghost">{t.backToTop}</a>
 		</div>
 		<div class="hero-note reveal" style="margin-top:22px;">

@@ -1,0 +1,209 @@
+---
+// Waitlist modal — opened by any element carrying `data-waitlist` (see
+// WaitlistButton.astro). States (idle | loading | error | success) are driven
+// by `body[data-wl-state]`; styles live in global.css under "WAITLIST MODAL".
+import type { Dict } from '../i18n/ui';
+
+interface Props {
+	dict: Dict;
+}
+
+const { dict } = Astro.props;
+const t = dict.waitlist;
+---
+
+<div class="wl-overlay" id="waitlist" hidden>
+	<div class="wl-dialog" role="dialog" aria-modal="true" aria-labelledby="wlTitle" aria-describedby="wlSub">
+		<button class="wl-close" id="wlClose" type="button" aria-label={t.closeLabel}>
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+		</button>
+		
+		{/* FORM (idle / loading / error) */}
+		<div class="wl-formwrap">
+			<span class="wl-badge mono"><span class="dot"></span>{t.badge}</span>
+			<h2 id="wlTitle">{t.title}</h2>
+			<p class="wl-sub" id="wlSub">{t.sub}</p>
+			
+			<form class="wl-form" id="wlForm" novalidate>
+				<label class="wl-label" for="wlEmail">{t.emailLabel}</label>
+				<div class="wl-field">
+					<input
+					class="wl-input"
+					id="wlEmail"
+					name="email"
+					type="email"
+					inputmode="email"
+					autocomplete="email"
+					placeholder={t.emailPlaceholder}
+					aria-describedby="wlErr"
+					required
+					/>
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><path d="m3.5 7 8.5 6 8.5-6"></path></svg>
+				</div>
+				<p class="wl-err" id="wlErr" role="alert" hidden>
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.5v.01"></path></svg>
+					<span>{t.invalidEmail}</span>
+				</p>
+				
+				<button class="wl-submit" id="wlSubmit" type="submit" disabled aria-disabled="true">
+					<span class="lbl">{t.submit}</span>
+					<span class="wl-spinner" aria-hidden="true"></span>
+				</button>
+				
+				<p class="wl-formerr" role="alert">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.7 3.86a2 2 0 0 0-3.4 0Z"></path><path d="M12 9v4M12 17h.01"></path></svg>
+					<span>{t.formError}</span>
+				</p>
+				
+				<p class="wl-fine">{t.fine}</p>
+			</form>
+		</div>
+		
+		{/* SUCCESS */}
+		<div class="wl-success">
+			<div class="wl-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></div>
+			<h2>{t.successTitle}</h2>
+			<p set:html={t.successHtml} />
+			<button class="btn wl-done" id="wlDone" type="button">{t.done}</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	const overlay = document.getElementById('waitlist');
+	const form = document.getElementById('wlForm') as HTMLFormElement | null;
+	const input = document.getElementById('wlEmail') as HTMLInputElement | null;
+	const submit = document.getElementById('wlSubmit') as HTMLButtonElement | null;
+	const errBox = document.getElementById('wlErr');
+	const closeBtn = document.getElementById('wlClose');
+	const doneBtn = document.getElementById('wlDone');
+	const successEmail = document.getElementById('wlSuccessEmail');
+	const dialog = overlay?.querySelector('.wl-dialog');
+	const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_zsAkVdNQgApJ5RoSvTEvMTv__8fzibfI3owHotewGo8CdNn_DOqPoVk6W04MCPec/exec";
+	
+	
+	if (overlay && dialog && form && input && submit && errBox && closeBtn && doneBtn && successEmail) {
+		const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		let lastFocused: Element | null = null;
+		
+		// idle | loading | success | error
+		const setState = (s: string) => {
+			document.body.dataset.wlState = s;
+		};
+		
+		async function joinWaitlist(email: string) {
+			await fetch(SCRIPT_URL, {
+				method: "POST",
+				mode: "no-cors",
+				headers: { "Content-Type": "text/plain;charset=utf-8" },
+				body: JSON.stringify({ email }),
+			});
+			
+		}
+		
+		function validate(show: boolean) {
+			const val = input!.value.trim();
+			const ok = EMAIL_RE.test(val);
+			submit!.disabled = !ok;
+			submit!.setAttribute('aria-disabled', String(!ok));
+			if (show && val && !ok) {
+				form!.classList.add('invalid');
+				errBox!.hidden = false;
+			} else {
+				form!.classList.remove('invalid');
+				errBox!.hidden = true;
+			}
+			return ok;
+		}
+		input.addEventListener('input', () => {
+			if (document.body.dataset.wlState === 'error') setState('idle');
+			validate(false);
+		});
+		input.addEventListener('blur', () => validate(true));
+		
+		// ---- focus trap ----
+		function focusables() {
+			return [...dialog!.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(
+				(el) => !(el as HTMLButtonElement).disabled && el.offsetParent !== null
+				);
+			}
+			function onKeydown(e: KeyboardEvent) {
+				if (e.key === 'Escape') {
+					e.preventDefault();
+					close();
+					return;
+				}
+				if (e.key !== 'Tab') return;
+				const f = focusables();
+				if (!f.length) return;
+				const first = f[0];
+				const last = f[f.length - 1];
+				if (e.shiftKey && document.activeElement === first) {
+					e.preventDefault();
+					last.focus();
+				} else if (!e.shiftKey && document.activeElement === last) {
+					e.preventDefault();
+					first.focus();
+				}
+			}
+			
+			function open() {
+				lastFocused = document.activeElement;
+				overlay!.hidden = false;
+				void (overlay as HTMLElement).offsetWidth; // reflow so the transition plays
+				overlay!.classList.add('open');
+				document.body.style.overflow = 'hidden';
+				setState('idle');
+				form!.reset();
+				validate(false);
+				document.addEventListener('keydown', onKeydown, true);
+				setTimeout(() => input!.focus(), 60);
+			}
+			function close() {
+				overlay!.classList.remove('open');
+				document.body.style.overflow = '';
+				document.removeEventListener('keydown', onKeydown, true);
+				setTimeout(() => {
+					overlay!.hidden = true;
+				}, 300);
+				if (lastFocused instanceof HTMLElement) lastFocused.focus();
+			}
+			
+			closeBtn.addEventListener('click', close);
+			doneBtn.addEventListener('click', close);
+			overlay.addEventListener('mousedown', (e) => {
+				if (e.target === overlay) close();
+			});
+			
+			// ---- submit (mocked) ----
+			form.addEventListener('submit', (e) => {
+				e.preventDefault();
+				if (!validate(true)) {
+					input!.focus();
+					return;
+				}
+				const email = input!.value.trim();
+				
+			
+				joinWaitlist(email).then(() => {}).catch(() => {
+					setState('error');
+					setTimeout(() => input!.focus(), 80);
+				});
+				
+				successEmail!.textContent = email;
+				setState('success');
+				setTimeout(() => doneBtn!.focus(), 80);
+			});
+			
+			setState('idle');
+			
+			// wire every trigger
+			document.querySelectorAll('[data-waitlist]').forEach((el) => {
+				el.addEventListener('click', (e) => {
+					e.preventDefault();
+					open();
+				});
+			});
+		}
+	</script>
+	

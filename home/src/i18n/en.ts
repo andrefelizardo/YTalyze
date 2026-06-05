@@ -28,7 +28,26 @@ export const en = {
 		privacy: 'Privacy',
 	},
 
-	getStarted: 'Get started',
+	joinWaitlist: 'Join the waitlist',
+
+	/** Copy for the waitlist modal (see WaitlistModal.astro). */
+	waitlist: {
+		closeLabel: 'Close waitlist dialog',
+		badge: 'Waitlist · Launching soon',
+		title: 'Join the waitlist',
+		sub: "YTalyze isn't open yet. Leave your email and you'll be first to know the day your rewind is ready.",
+		emailLabel: 'Email address',
+		emailPlaceholder: 'you@example.com',
+		invalidEmail: 'Please enter a valid email address.',
+		submit: 'Join the waitlist',
+		formError: "Something went wrong on our end. Your email wasn't saved — please try again.",
+		fine: 'No account, no password — just one email when YTalyze opens. Unsubscribe anytime.',
+		successTitle: "You're on the list!",
+		/** `<b id="wlSuccessEmail">` is swapped for the submitted email by the modal script. */
+		successHtml:
+			'We\'ve saved <b id="wlSuccessEmail">your spot</b>. You\'ll get one email the moment your rewind is ready — nothing before then.',
+		done: 'Done',
+	},
 
 	hero: {
 		eyebrow: 'Rewind your watch history',

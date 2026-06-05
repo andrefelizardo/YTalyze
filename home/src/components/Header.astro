@@ -1,5 +1,5 @@
 ---
-import GetStartedButton from './GetStartedButton.astro';
+import WaitlistButton from './WaitlistButton.astro';
 import { navLinks } from '../data/site';
 import type { Dict } from '../i18n/ui';
 
@@ -25,7 +25,7 @@ const { dict } = Astro.props;
 			<svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg>
 		</button>
 		<div class="nav-cta">
-			<GetStartedButton label={dict.getStarted} />
+			<WaitlistButton label={dict.joinWaitlist} />
 		</div>
 		<button class="hamburger" id="hamburger" aria-label={dict.a11y.menu} aria-expanded="false">
 			<span></span><span></span><span></span>
@@ -33,7 +33,7 @@ const { dict } = Astro.props;
 	</div>
 	<div class="mobile-menu" id="mobileMenu">
 		{navLinks.map((link) => <a href={link.href}>{dict.nav[link.key]}</a>)}
-		<GetStartedButton label={dict.getStarted} />
+		<WaitlistButton label={dict.joinWaitlist} />
 	</div>
 </header>
 
@@ -58,7 +58,8 @@ const { dict } = Astro.props;
 			document.body.classList.toggle('menu-open', open);
 			burger.setAttribute('aria-expanded', String(open));
 		});
-		menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+		// links *and* the waitlist button — opening the modal should also close the menu
+		menu.querySelectorAll('a, [data-waitlist]').forEach((el) => el.addEventListener('click', closeMenu));
 	}
 
 	// ---- theme toggle ----

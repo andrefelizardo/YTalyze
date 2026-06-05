@@ -10,6 +10,7 @@ import Trust from './Trust.astro';
 import Statement from './Statement.astro';
 import FinalCta from './FinalCta.astro';
 import Footer from './Footer.astro';
+import WaitlistModal from './WaitlistModal.astro';
 import { insights } from '../data/insights';
 import { getDict, type Locale } from '../i18n/ui';
 
@@ -124,6 +125,7 @@ const cookRows = asides.cook.rows.map((row, i) => ({ ...row, p: [1, 0.58, 0.43, 
 		<FinalCta dict={dict} />
 	</main>
 	<Footer dict={dict} />
+	<WaitlistModal dict={dict} />
 </Layout>
 
 <script>

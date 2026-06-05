@@ -1,0 +1,19 @@
+---
+// The white "Join the waitlist" pill, reused in the nav, hero, and final CTA.
+// Opens the waitlist modal via the shared `data-waitlist` trigger hook.
+import ArrowIcon from './ArrowIcon.astro';
+
+interface Props {
+	/** Localized label — pass `dict.joinWaitlist`. */
+	label: string;
+	withArrow?: boolean;
+	class?: string;
+}
+
+const { label, withArrow = false, class: className } = Astro.props;
+---
+
+<button type="button" class:list={['btn', 'btn-google', className]} data-waitlist>
+	{label}
+	{withArrow && <ArrowIcon class="gicon" />}
+</button>
