@@ -147,7 +147,7 @@ const t = dict.waitlist;
 				}
 			}
 			
-			function open() {
+			function open(source?: string) {
 				lastFocused = document.activeElement;
 				overlay!.hidden = false;
 				void (overlay as HTMLElement).offsetWidth; // reflow so the transition plays
@@ -158,6 +158,7 @@ const t = dict.waitlist;
 				validate(false);
 				document.addEventListener('keydown', onKeydown, true);
 				setTimeout(() => input!.focus(), 60);
+				window.posthog?.capture('waitlist_button_clicked', { source: source || 'unknown' });
 			}
 			function close() {
 				overlay!.classList.remove('open');
@@ -175,7 +176,7 @@ const t = dict.waitlist;
 				if (e.target === overlay) close();
 			});
 			
-			// ---- submit (mocked) ----
+			// ---- submit ----
 			form.addEventListener('submit', (e) => {
 				e.preventDefault();
 				if (!validate(true)) {
@@ -183,13 +184,16 @@ const t = dict.waitlist;
 					return;
 				}
 				const email = input!.value.trim();
-				
-			
-				joinWaitlist(email).then(() => {}).catch(() => {
+				window.posthog?.capture('waitlist_form_submitted');
+
+				joinWaitlist(email).then(() => {
+					window.posthog?.capture('waitlist_joined');
+				}).catch(() => {
 					setState('error');
+					window.posthog?.capture('waitlist_submission_failed');
 					setTimeout(() => input!.focus(), 80);
 				});
-				
+
 				successEmail!.textContent = email;
 				setState('success');
 				setTimeout(() => doneBtn!.focus(), 80);
@@ -201,7 +205,8 @@ const t = dict.waitlist;
 			document.querySelectorAll('[data-waitlist]').forEach((el) => {
 				el.addEventListener('click', (e) => {
 					e.preventDefault();
-					open();
+					const source = (el as HTMLElement).dataset.waitlistSource || 'unknown';
+					open(source);
 				});
 			});
 		}

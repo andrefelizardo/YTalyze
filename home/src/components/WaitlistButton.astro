@@ -8,12 +8,13 @@ interface Props {
 	label: string;
 	withArrow?: boolean;
 	class?: string;
+	source?: string;
 }
 
-const { label, withArrow = false, class: className } = Astro.props;
+const { label, withArrow = false, class: className, source } = Astro.props;
 ---
 
-<button type="button" class:list={['btn', 'btn-google', className]} data-waitlist>
+<button type="button" class:list={['btn', 'btn-google', className]} data-waitlist data-waitlist-source={source}>
 	{label}
 	{withArrow && <ArrowIcon class="gicon" />}
 </button>

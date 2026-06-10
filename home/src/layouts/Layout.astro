@@ -1,6 +1,7 @@
 ---
 import Seo from '../components/Seo.astro';
 import RevealScript from '../components/RevealScript.astro';
+import PostHog from '../components/posthog.astro';
 import { defaultLocale, hreflang, type Locale } from '../i18n/ui';
 import '../styles/global.css';
 
@@ -67,6 +68,7 @@ const detectScript = `(function () {
 			type={type}
 			canonical={canonical}
 		/>
+		<PostHog />
 	</head>
 	<body>
 		<slot />

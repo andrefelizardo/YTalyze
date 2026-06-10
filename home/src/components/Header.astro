@@ -25,7 +25,7 @@ const { dict } = Astro.props;
 			<svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg>
 		</button>
 		<div class="nav-cta">
-			<WaitlistButton label={dict.joinWaitlist} />
+			<WaitlistButton label={dict.joinWaitlist} source="header_nav" />
 		</div>
 		<button class="hamburger" id="hamburger" aria-label={dict.a11y.menu} aria-expanded="false">
 			<span></span><span></span><span></span>
@@ -33,7 +33,7 @@ const { dict } = Astro.props;
 	</div>
 	<div class="mobile-menu" id="mobileMenu">
 		{navLinks.map((link) => <a href={link.href}>{dict.nav[link.key]}</a>)}
-		<WaitlistButton label={dict.joinWaitlist} />
+		<WaitlistButton label={dict.joinWaitlist} source="mobile_menu" />
 	</div>
 </header>
 
@@ -86,11 +86,18 @@ const { dict } = Astro.props;
 		themeBtn.addEventListener('click', () => {
 			const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
 			applyTheme(next);
+			window.posthog?.capture('theme_toggled', { theme: next });
 			try {
 				localStorage.setItem(THEME_KEY, next);
 			} catch (e) {}
 		});
 	}
+
+	document.querySelectorAll('.nav-links a, .mobile-menu a').forEach((el) => {
+		el.addEventListener('click', () => {
+			window.posthog?.capture('nav_link_clicked', { href: (el as HTMLAnchorElement).getAttribute('href') });
+		});
+	});
 
 	// Follow live OS theme changes only while the user has no manual preference saved.
 	lightQuery.addEventListener('change', (e) => {
