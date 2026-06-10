@@ -1,0 +1,9 @@
+{
+	// Static-assets-only Worker: serves the Astro SSG build in ./dist.
+	// No `main` = no server code, no SSR, no KV/sessions.
+	"name": "ytalyze",
+	"compatibility_date": "2026-06-10",
+	"assets": {
+		"directory": "./dist"
+	}
+}
