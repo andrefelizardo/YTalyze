@@ -1,0 +1,186 @@
+.login {
+  --login-bg: #0b0b0c;
+  --login-ink: #f7f5f1;
+  --login-muted: rgba(247, 245, 241, 0.42);
+  --login-toggle-bg: rgba(255, 255, 255, 0.05);
+  --login-toggle-border: rgba(255, 255, 255, 0.14);
+  --login-pill-bg: #f4f2ee;
+  --login-pill-border: transparent;
+  --login-badge-text: #6fe3c4;
+  --login-glow-opacity: 0.16;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  overflow: clip;
+  background: var(--login-bg);
+  color: var(--login-ink);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.login[data-theme='light'] {
+  --login-bg: #fbfaf7;
+  --login-ink: #1a1612;
+  --login-muted: rgba(26, 22, 18, 0.42);
+  --login-toggle-bg: rgba(26, 22, 18, 0.05);
+  --login-toggle-border: rgba(26, 22, 18, 0.14);
+  --login-pill-bg: #ffffff;
+  --login-pill-border: rgba(26, 22, 18, 0.14);
+  --login-badge-text: #0a7c60;
+  --login-glow-opacity: 0.2;
+}
+
+.login__glow {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: 760px;
+  height: 760px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  opacity: var(--login-glow-opacity);
+  filter: blur(120px);
+  background-image: linear-gradient(
+    in oklab 168deg,
+    oklab(65.3% 0.231 0.057) 0%,
+    oklab(70.5% 0.151 0.116) 52%,
+    oklab(81.6% 0.046 0.147) 100%
+  );
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.login__topbar {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 22px 34px 0;
+  position: relative;
+}
+
+.login__theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--login-toggle-bg);
+  border: 1px solid var(--login-toggle-border);
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.15s ease;
+}
+.login__theme-toggle:hover {
+  transform: translateY(-1px);
+}
+.login__theme-toggle svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+.login__content {
+  flex: 1 0 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 36px 22px 56px;
+  position: relative;
+}
+
+.login__card {
+  width: 100%;
+  max-width: 392px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login__mark {
+  margin-bottom: 30px;
+  flex-shrink: 0;
+}
+
+.login__title {
+  margin: 0;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 38px;
+  line-height: 104%;
+  letter-spacing: -0.035em;
+  text-align: center;
+}
+
+.login__google-button {
+  margin-top: 36px;
+  width: 100%;
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 999px;
+  background: var(--login-pill-bg);
+  border: 1px solid var(--login-pill-border);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06), 0 12px 30px -16px rgba(0, 0, 0, 0.6);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 16.5px;
+  line-height: 20px;
+  color: #14110e;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.15s ease;
+}
+.login__google-button:hover {
+  transform: translateY(-1px);
+}
+.login__google-button svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.login__badge {
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 13px 15px;
+  border-radius: 13px;
+  background: rgba(15, 184, 144, 0.1);
+  border: 1px solid rgba(15, 184, 144, 0.32);
+  color: var(--login-badge-text);
+  transition: color 0.3s ease;
+}
+.login__badge svg {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.login__badge span {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.login__disclaimer {
+  margin: 30px 0 0;
+  max-width: 340px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12.5px;
+  line-height: 160%;
+  color: var(--login-muted);
+  text-align: center;
+  transition: color 0.3s ease;
+}

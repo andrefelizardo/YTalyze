@@ -1,0 +1,37 @@
+/* Shared theme shell for all authenticated pages. Header, footer, and page
+   content read --shell-bg / --shell-ink-rgb so a single dark/light switch
+   here drives every logged-in page. */
+.app-shell {
+  --shell-bg: #0b0b0c;
+  --shell-ink-rgb: 247, 245, 241;
+  --shell-panel-from: oklab(22.4% 0.002 -0.007);
+  --shell-panel-to: oklab(19.3% 0.002 -0.006);
+  --accent-gradient: linear-gradient(in oklab 100deg, oklab(65.3% 0.231 0.057) 0%, oklab(70.5% 0.151 0.116) 48%, oklab(81.6% 0.046 0.147) 100%);
+  --accent-gradient-avatar: linear-gradient(in oklab 168deg, oklab(65.3% 0.231 0.057) 0%, oklab(70.5% 0.151 0.116) 52%, oklab(81.6% 0.046 0.147) 100%);
+  --accent-solid: #ff6b3d;
+  --success-solid: #0fb890;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--shell-bg);
+  color: rgb(var(--shell-ink-rgb));
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.gradient-text {
+  background-image: var(--accent-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.app-shell[data-theme='light'] {
+  --shell-bg: #fbfaf7;
+  --shell-ink-rgb: 26, 22, 18;
+  --shell-panel-from: oklab(100% 0 0);
+  --shell-panel-to: oklab(96.2% 0.0008 0.009);
+}

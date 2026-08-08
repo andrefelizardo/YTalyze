@@ -1,0 +1,76 @@
+.stage-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  gap: 2px;
+  list-style: none;
+}
+
+.stage-list__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14.5px;
+  color: rgba(var(--shell-ink-rgb), 0.34);
+  transition: color 0.3s ease;
+}
+
+.stage-list__dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(var(--shell-ink-rgb), 0.16);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.stage-list__dot svg {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+}
+
+.stage-list__item[data-status='active'] {
+  color: rgb(var(--shell-ink-rgb));
+  font-weight: 600;
+}
+.stage-list__item[data-status='active'] .stage-list__dot {
+  border-color: rgba(var(--shell-ink-rgb), 0.14);
+  border-top-color: var(--accent-solid);
+  border-right-color: var(--accent-solid);
+  animation: stage-list-spin 0.8s linear infinite;
+}
+
+.stage-list__item[data-status='done'] {
+  color: rgba(var(--shell-ink-rgb), 0.62);
+}
+.stage-list__item[data-status='done'] .stage-list__dot {
+  border-color: transparent;
+  background: var(--success-solid);
+  color: #0b0b0c;
+}
+
+.stage-list__label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.stage-list__status {
+  font-family: 'Space Mono', system-ui, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(var(--shell-ink-rgb), 0.34);
+}
+
+@keyframes stage-list-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
