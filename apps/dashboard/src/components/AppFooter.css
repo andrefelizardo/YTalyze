@@ -1,0 +1,77 @@
+.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+  padding-top: 26px;
+  gap: 26px;
+  border-top: 1px solid rgba(var(--shell-ink-rgb), 0.08);
+  transition: border-color 0.3s ease;
+}
+
+.app-footer__legal {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.app-footer__copyright {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  line-height: 18px;
+  letter-spacing: -0.01em;
+  color: rgba(var(--shell-ink-rgb), 0.72);
+}
+
+.app-footer__divider {
+  width: 1px;
+  height: 13px;
+  flex-shrink: 0;
+  background: rgba(var(--shell-ink-rgb), 0.16);
+}
+
+.app-footer__disclaimer {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 16px;
+  color: rgba(var(--shell-ink-rgb), 0.44);
+}
+
+.app-footer__links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 22px;
+}
+
+.app-footer__link {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  color: rgba(var(--shell-ink-rgb), 0.5);
+}
+
+.app-footer__brand-link {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  color: var(--accent-solid);
+}
+
+@media (max-width: 640px) {
+  .app-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 22px;
+    gap: 14px;
+  }
+
+  .app-footer__links {
+    gap: 16px;
+  }
+}
