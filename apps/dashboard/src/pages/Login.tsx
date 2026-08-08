@@ -1,15 +1,7 @@
 import { useTheme } from '../hooks/useTheme'
 import { YtalyzeMark } from '../components/YtalyzeMark'
-import { MoonIcon, SunIcon } from '../components/icons'
+import { CheckIcon, MoonIcon, SunIcon } from '../components/icons'
 import './Login.css'
-
-function CheckIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  )
-}
 
 function GoogleIcon() {
   return (

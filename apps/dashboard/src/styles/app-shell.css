@@ -9,6 +9,7 @@
   --accent-gradient: linear-gradient(in oklab 100deg, oklab(65.3% 0.231 0.057) 0%, oklab(70.5% 0.151 0.116) 48%, oklab(81.6% 0.046 0.147) 100%);
   --accent-gradient-avatar: linear-gradient(in oklab 168deg, oklab(65.3% 0.231 0.057) 0%, oklab(70.5% 0.151 0.116) 52%, oklab(81.6% 0.046 0.147) 100%);
   --accent-solid: #ff6b3d;
+  --success-solid: #0fb890;
 
   display: flex;
   flex-direction: column;
@@ -19,6 +20,13 @@
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.gradient-text {
+  background-image: var(--accent-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .app-shell[data-theme='light'] {

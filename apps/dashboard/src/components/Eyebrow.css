@@ -1,0 +1,21 @@
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.eyebrow__rule {
+  width: 20px;
+  height: 1px;
+  flex-shrink: 0;
+  background: var(--accent-solid);
+}
+
+.eyebrow span:last-child {
+  font-family: 'Space Mono', system-ui, monospace;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(var(--shell-ink-rgb), 0.5);
+}
