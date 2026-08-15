@@ -1,17 +1,12 @@
-import { useState } from 'react'
-import { Upload } from './pages/Upload'
-import { Results } from './pages/Results'
-
-type Page = 'upload' | 'results'
+import { Login } from "./pages/Login";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 function App() {
-  const [page, setPage] = useState<Page>('upload')
-
-  if (page === 'results') {
-    return <Results onNewUpload={() => setPage('upload')} />
-  }
-
-  return <Upload onComplete={() => setPage('results')} />
+  return (
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <Login />
+    </GoogleOAuthProvider>
+  );
 }
 
-export default App
+export default App;
