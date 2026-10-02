@@ -1,12 +1,10 @@
-import { Login } from "./pages/Login";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
-function App() {
-  return (
+export const Route = createRootRoute({
+  component: () => (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <Login />
+      <Outlet />
     </GoogleOAuthProvider>
-  );
-}
-
-export default App;
+  ),
+});

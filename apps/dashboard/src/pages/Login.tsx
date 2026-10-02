@@ -3,6 +3,7 @@ import { YtalyzeMark } from "../components/YtalyzeMark";
 import { MoonIcon, SunIcon } from "../components/icons";
 import "./Login.css";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "@tanstack/react-router";
 
 function GoogleIcon() {
   return (
@@ -29,8 +30,13 @@ function GoogleIcon() {
 
 export function Login() {
   const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+
   const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
+    onSuccess: (tokenResponse) => {
+      localStorage.setItem("token", JSON.stringify(tokenResponse));
+      navigate({ to: "/upload", replace: true });
+    },
   });
 
   return (
