@@ -37,6 +37,9 @@ export function Login() {
       localStorage.setItem("token", JSON.stringify(tokenResponse));
       navigate({ to: "/upload", replace: true });
     },
+    onError: (error) => console.log("Error on useGoogleLogin", error),
+    onNonOAuthError: (nonOAuthError) =>
+      console.log("NonOAuthError on useGoogleLogin", nonOAuthError),
   });
 
   return (
