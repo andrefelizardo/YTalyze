@@ -15,5 +15,8 @@
   "packageManager": "pnpm@10.15.1",
   "dependencies": {
     "fastify": "^5.12.5"
+  },
+  "engines": {
+    "node": ">=22.9"
   }
 }
